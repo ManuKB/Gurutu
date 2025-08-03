@@ -16,7 +16,7 @@ const App = () => {
     return (
         <div>
         <div id="loader" className='loader-container' hidden={true} ><span className="loader"></span></div>
-        <Router basename="/Gurutu">
+        <Router basename=".">
             <Routes>
                 <Route element={<PrivateRoute />}>
                     <Route path="/dashboard" element={<Dashboard />} />

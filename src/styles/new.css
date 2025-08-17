@@ -1,0 +1,29 @@
+.new-credentials{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+div.password-icon{
+  font-size: 1.5rem;
+  padding: 5px;
+  display: block;
+  position: absolute;
+  right: 15px;
+
+}
+
+@media screen and (max-width: 768px) {
+  .new-credentials {
+    padding: 10px;
+    width: 100%;
+  }
+  
+  div.password-icon {
+    right: 10px;
+    font-size: 1.2rem;
+  }
+  
+}

@@ -11,7 +11,7 @@ const NavBar: React.FC<NavBarConfigItem> = ({smallsidebar, name}) => {
         // <div className={`${smallsidebar ? 'smallsidebar' : 'bigsidebar'} nav`}>
             <div className="slidebar nav">
             <div className="logo">
-                <img src={require('../resources/images/logo.jpg')} alt="Logo" />
+                <img src={require('../resources/images/logo.webp')} alt="Logo"></img>
             </div>
                 {
                     NavBarConfig?.map((menu, index) => (

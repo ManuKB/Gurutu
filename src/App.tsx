@@ -29,6 +29,7 @@ const App = () => {
                 {/* <PrivateRoute path="/dashboard" component={Dashboard} /> */}
                 <Route path="/login" element={<Login />}  />
                 <Route path="/" element={<Navigate to="/login" replace />} />
+                <Route path="*" element={<Logout />} />
             </Routes>
         </Router>
         <ToastContainer position="top-center" autoClose={3000} draggable />

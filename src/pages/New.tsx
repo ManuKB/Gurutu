@@ -1,23 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "../navigation/NavBar";
 import "../styles/new.css"; // Assuming you have a CSS file for styling
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import PassPhraseModal from "./PassPhraseModal";
 import { encryptData } from "../utils/encryption";
-import { addCredentials } from "../utils/api";
+import { addCredentials, getConstants } from "../utils/api";
 import custom_loader from "../utils/custom_loader";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { logout } from "../utils/auth";
 
 const Dashboard: React.FC = () => {
-  // state to hold inputs
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     username: "",
     password: "",
   });
-    const [isPassword, setIsPassword] = useState(true);
-    const [phrase, setPhrase] = useState("");
+  const [isPassword, setIsPassword] = useState(true);
+  const [phrase, setPhrase] = useState("");
 
+  useEffect(() => {
+    getConstants()
+      .then((response) => {})
+      .catch((error) => {
+          toast.error("Error on server side please try again later");
+      });
+  }, []);
   // update state on input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -29,26 +37,26 @@ const Dashboard: React.FC = () => {
   // submit handler
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const encryptPass=encryptData(formData.password, phrase);
-    const credentials = {
+    const encryptPass = encryptData(formData.password, phrase);
+
+    const pwd = {
       ...formData,
       pwd: encryptPass,
-      entity: formData.username,
-      type: "credentials",
+      entity: encryptData(formData.username, phrase),
+      type: "PWD",
     };
     custom_loader.showLoader(); // Show loader before API call
-    addCredentials(credentials)
-      .then((response) => {
+    addCredentials(pwd)
+      .then((response:any) => {
         toast.success("Credentials added successfully");
         setPhrase("");
       })
       .catch((error) => {
-        toast.error("Error adding credentials")
         console.error("Error adding credentials:", error);
-      }).finally(() => {
+      })
+      .finally(() => {
         custom_loader.hide(); // Hide loader after API call
       });
-
   };
 
   return (
@@ -85,7 +93,7 @@ const Dashboard: React.FC = () => {
             <div className="label-left-item item">
               <label htmlFor="password">Password</label>
               <input
-                type={isPassword? "password" : "text"}
+                type={isPassword ? "password" : "text"}
                 id="password"
                 name="password"
                 placeholder="Enter password"
@@ -94,14 +102,19 @@ const Dashboard: React.FC = () => {
                 onChange={handleChange}
               />
               {formData.password && (
-              <div className="password-icon" onClick={() => setIsPassword(!isPassword)}>
-              {isPassword && (<Visibility/>)}
-              {!isPassword && (<VisibilityOff/>)}</div>)}
+                <div
+                  className="password-icon"
+                  onClick={() => setIsPassword(!isPassword)}
+                >
+                  {isPassword && <Visibility />}
+                  {!isPassword && <VisibilityOff />}
+                </div>
+              )}
             </div>
-             <div className="label-left-item item">
+            <div className="label-left-item item">
               <label htmlFor="password">Encyption Phrase</label>
               <input
-                type= "text"
+                type="text"
                 id="phrase"
                 name="phrase"
                 placeholder="Enter encryption phrase"
@@ -109,9 +122,11 @@ const Dashboard: React.FC = () => {
                 required
                 onChange={(e) => setPhrase(e.target.value)}
               />
-              </div>
+            </div>
             <div className="bottom-action">
-              <button className='button-primary' type="submit">Submit</button>
+              <button className="button-primary" type="submit">
+                Submit
+              </button>
             </div>
           </form>
         </div>

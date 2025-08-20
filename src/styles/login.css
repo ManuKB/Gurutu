@@ -17,7 +17,6 @@
     #262626 50%,
     #607d8d 100%
   );
-  backdrop-filter: hue-rotate(120deg);
   animation: animate 10s ease-in infinite;
 }
 
@@ -57,13 +56,19 @@
     transform: translateY(0px);
   }
   55% {
-    transform: translateY(-80px);
+    transform: translateY(-60px);
   }
   70% {
     transform: translateY(0px);
   }
   85% {
-    transform: translateY(-40px);
+    transform: translateY(-20px);
+  }
+  90% {
+    transform: translateY(0px);
+  }
+  95% {
+    transform: translateY(-10px);
   }
   100% {
     transform: translateY(0px);
